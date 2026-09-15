@@ -7,7 +7,16 @@ import DeleteRecipeButton from '@/components/DeleteRecipeButton'
 export default async function HomePage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string; ingredients?: string }>
+  searchParams: Promise<{ 
+    category?: string; 
+    ingredients?: string;
+    difficulty?: string;
+    cuisine?: string;
+    occasion?: string;
+    dietary?: string;
+    preptime?: string;
+    rating?: string;
+  }>
 }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -47,18 +56,18 @@ export default async function HomePage({
 
     // Cuisine Filter (OR logic, case-insensitive)
     if (cuisineFilter.length > 0) {
-      if (!recipe.cuisine || !cuisineFilter.some(c => c.toLowerCase() === recipe.cuisine.toLowerCase())) return false
+      if (!recipe.cuisine || !cuisineFilter.some((c: string) => c.toLowerCase() === recipe.cuisine.toLowerCase())) return false
     }
 
     // Occasion Filter (OR logic, case-insensitive)
     if (occasionFilter.length > 0) {
-      if (!recipe.occasion || !occasionFilter.some(o => o.toLowerCase() === recipe.occasion.toLowerCase())) return false
+      if (!recipe.occasion || !occasionFilter.some((o: string) => o.toLowerCase() === recipe.occasion.toLowerCase())) return false
     }
 
     // Dietary Needs Filter (AND logic, all selected dietary needs must be met)
     if (dietaryFilter.length > 0) {
       if (!recipe.dietary_needs) return false
-      const hasDietaryNeeds = dietaryFilter.every(need => 
+      const hasDietaryNeeds = dietaryFilter.every((need: string) => 
         recipe.dietary_needs.includes(need)
       )
       if (!hasDietaryNeeds) return false
@@ -96,7 +105,7 @@ export default async function HomePage({
         ? ratings.reduce((acc: number, curr: any) => acc + curr.rating, 0) / totalRatings 
         : 0
         
-      const passesRating = ratingFilter.some(filter => {
+      const passesRating = ratingFilter.some((filter: string) => {
         if (filter === '4+ Stars') return averageRating >= 4
         if (filter === '3+ Stars') return averageRating >= 3
         if (filter === '2+ Stars') return averageRating >= 2
