@@ -249,11 +249,11 @@ export default function SidebarFilter() {
         </div>
       )}
 
+      {renderSection('Source', 'source', ['Original', 'Imported'])}
       {renderSection('Categories', 'category', CATEGORIES)}
       {renderSection('Ingredients', 'ingredients', Array.from(new Set([...DEFAULT_INGREDIENTS, ...customIngredients])), { value: newIngredient, setter: setNewIngredient, customListSetter: setCustomIngredients })}
       {renderSection('Difficulty', 'difficulty', DIFFICULTIES)}
       {renderSection('Rating', 'rating', RATINGS)}
-      {renderSection('Source', 'source', ['Original', 'Imported'])}
       {renderSection('Prep Time', 'preptime', PREP_TIMES)}
       {renderSection('Dietary Needs', 'dietary', DIETARY_NEEDS)}
       {renderSection('Cuisine', 'cuisine', Array.from(new Set([...DEFAULT_CUISINES, ...customCuisines])), { value: newCuisine, setter: setNewCuisine, customListSetter: setCustomCuisines })}
