@@ -16,6 +16,7 @@ export default async function HomePage({
     dietary?: string;
     preptime?: string;
     rating?: string;
+    source?: string;
   }>
 }) {
   const supabase = await createClient()
@@ -30,6 +31,7 @@ export default async function HomePage({
   const dietaryFilter = params.dietary ? params.dietary.split(',').filter(Boolean) : []
   const prepTimeFilter = params.preptime ? params.preptime.split(',').filter(Boolean) : []
   const ratingFilter = params.rating ? params.rating.split(',').filter(Boolean) : []
+  const sourceFilter = params.source ? params.source.split(',').filter(Boolean) : []
 
   let query = supabase.from('cookbook_recipes').select('*, cookbook_ratings(rating)').order('created_at', { ascending: false })
 
@@ -113,6 +115,16 @@ export default async function HomePage({
         return false
       })
       if (!passesRating) return false
+    }
+
+    // Source Filter (OR logic)
+    if (sourceFilter.length > 0) {
+      const isOriginal = !recipe.source_url;
+      const isImported = !!recipe.source_url;
+      let matchesSource = false;
+      if (sourceFilter.includes('Original') && isOriginal) matchesSource = true;
+      if (sourceFilter.includes('Imported') && isImported) matchesSource = true;
+      if (!matchesSource) return false;
     }
 
     return true

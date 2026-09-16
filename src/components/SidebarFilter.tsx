@@ -71,7 +71,7 @@ export default function SidebarFilter() {
     const currentValues = searchParams.get(paramName)?.split(',').filter(Boolean) || []
     
     // Exact match for category, case-insensitive for others like ingredients
-    const isExact = paramName === 'category' || paramName === 'difficulty' || paramName === 'preptime' || paramName === 'dietary' || paramName === 'rating'
+    const isExact = paramName === 'category' || paramName === 'difficulty' || paramName === 'preptime' || paramName === 'dietary' || paramName === 'rating' || paramName === 'source'
     
     let updated: string[] = []
     
@@ -147,7 +147,7 @@ export default function SidebarFilter() {
         {isOpen && (
           <div className="p-4 pt-0 border-t border-[var(--color-rustic-muted)]/10 flex flex-col gap-2">
             {options.map((opt) => {
-              const isSelected = paramName === 'category' || paramName === 'difficulty' || paramName === 'preptime' || paramName === 'dietary' || paramName === 'rating'
+              const isSelected = paramName === 'category' || paramName === 'difficulty' || paramName === 'preptime' || paramName === 'dietary' || paramName === 'rating' || paramName === 'source'
                 ? currentValues.includes(opt)
                 : currentValues.some(v => v.toLowerCase() === opt.toLowerCase())
                 
@@ -197,7 +197,7 @@ export default function SidebarFilter() {
 
   const getActiveFilters = () => {
     const filters: { paramName: string; value: string; display: string }[] = []
-    const paramsToCheck = ['category', 'ingredients', 'difficulty', 'preptime', 'dietary', 'cuisine', 'occasion', 'rating']
+    const paramsToCheck = ['category', 'ingredients', 'difficulty', 'preptime', 'dietary', 'cuisine', 'occasion', 'rating', 'source']
     
     paramsToCheck.forEach(param => {
       const values = searchParams.get(param)?.split(',').filter(Boolean) || []
@@ -253,6 +253,7 @@ export default function SidebarFilter() {
       {renderSection('Ingredients', 'ingredients', Array.from(new Set([...DEFAULT_INGREDIENTS, ...customIngredients])), { value: newIngredient, setter: setNewIngredient, customListSetter: setCustomIngredients })}
       {renderSection('Difficulty', 'difficulty', DIFFICULTIES)}
       {renderSection('Rating', 'rating', RATINGS)}
+      {renderSection('Source', 'source', ['Original', 'Imported'])}
       {renderSection('Prep Time', 'preptime', PREP_TIMES)}
       {renderSection('Dietary Needs', 'dietary', DIETARY_NEEDS)}
       {renderSection('Cuisine', 'cuisine', Array.from(new Set([...DEFAULT_CUISINES, ...customCuisines])), { value: newCuisine, setter: setNewCuisine, customListSetter: setCustomCuisines })}
