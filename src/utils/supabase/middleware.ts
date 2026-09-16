@@ -35,15 +35,25 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const isProtectedRoute = 
-    request.nextUrl.pathname.startsWith('/add') || 
-    request.nextUrl.pathname.startsWith('/import') || 
-    request.nextUrl.pathname.match(/^\/recipe\/.*\/edit$/)
+  // Protect all routes by default except login, auth, and static files
+  const isPublicRoute = 
+    request.nextUrl.pathname.startsWith('/login') || 
+    request.nextUrl.pathname.startsWith('/auth') ||
+    request.nextUrl.pathname.startsWith('/_next') ||
+    request.nextUrl.pathname.startsWith('/icon.svg') ||
+    request.nextUrl.pathname.match(/\.(.*)$/); // Match file extensions (e.g. .css, .js, .png)
 
-  if (!user && isProtectedRoute) {
-    // no user, potentially respond by redirecting the user to the login page
+  if (!user && !isPublicRoute) {
+    // no user, redirect to login page
     const url = request.nextUrl.clone()
     url.pathname = '/login'
+    return NextResponse.redirect(url)
+  }
+
+  // If user is logged in, prevent them from accessing the login page
+  if (user && request.nextUrl.pathname.startsWith('/login')) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/'
     return NextResponse.redirect(url)
   }
 
