@@ -28,9 +28,9 @@ export default async function RecipePage({
   const ratings = recipe.cookbook_ratings || []
   const totalRatings = ratings.length
   const averageRating = totalRatings > 0 
-    ? ratings.reduce((acc: number, curr: any) => acc + curr.rating, 0) / totalRatings 
+    ? ratings.reduce((acc: number, curr: { rating: number }) => acc + curr.rating, 0) / totalRatings 
     : 0
-  const initialUserRating = user ? ratings.find((r: any) => r.user_id === user.id)?.rating || null : null
+  const initialUserRating = user ? ratings.find((r: { user_id: string, rating: number }) => r.user_id === user.id)?.rating || null : null
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">

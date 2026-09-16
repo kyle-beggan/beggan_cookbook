@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useState, useCallback, KeyboardEvent } from 'react'
-import { Plus, ChevronDown, ChevronUp } from 'lucide-react'
+import { Plus, ChevronDown, ChevronUp, Filter } from 'lucide-react'
 
 const CATEGORIES = [
   'Appetizers and Snacks',
@@ -214,9 +214,22 @@ export default function SidebarFilter() {
   }
 
   const activeFilters = getActiveFilters()
+  const [isMobileOpen, setIsMobileOpen] = useState(false)
 
   return (
     <div className="flex flex-col gap-4">
+      <button 
+        onClick={() => setIsMobileOpen(!isMobileOpen)}
+        className="md:hidden flex items-center justify-between w-full p-4 bg-[var(--color-rustic-card)] border border-[var(--color-rustic-muted)]/20 rounded-xl font-bold text-[var(--color-rustic-text)]"
+      >
+        <div className="flex items-center gap-2">
+          <Filter className="w-5 h-5 text-[var(--color-rustic-muted)]" />
+          <span>Filters {activeFilters.length > 0 && `(${activeFilters.length})`}</span>
+        </div>
+        {isMobileOpen ? <ChevronUp className="w-5 h-5 text-[var(--color-rustic-muted)]" /> : <ChevronDown className="w-5 h-5 text-[var(--color-rustic-muted)]" />}
+      </button>
+
+      <div className={`flex-col gap-4 ${isMobileOpen ? 'flex' : 'hidden'} md:flex`}>
       {activeFilters.length > 0 && (
         <div className="bg-[var(--color-rustic-card)] p-4 rounded-xl border border-[var(--color-rustic-muted)]/20 shadow-sm mb-2">
           <div className="flex items-center justify-between mb-3">
@@ -258,6 +271,7 @@ export default function SidebarFilter() {
       {renderSection('Dietary Needs', 'dietary', DIETARY_NEEDS)}
       {renderSection('Cuisine', 'cuisine', Array.from(new Set([...DEFAULT_CUISINES, ...customCuisines])), { value: newCuisine, setter: setNewCuisine, customListSetter: setCustomCuisines })}
       {renderSection('Occasion', 'occasion', Array.from(new Set([...DEFAULT_OCCASIONS, ...customOccasions])), { value: newOccasion, setter: setNewOccasion, customListSetter: setCustomOccasions })}
+      </div>
     </div>
   )
 }

@@ -104,7 +104,7 @@ export default async function HomePage({
       const ratings = recipe.cookbook_ratings || []
       const totalRatings = ratings.length
       const averageRating = totalRatings > 0 
-        ? ratings.reduce((acc: number, curr: any) => acc + curr.rating, 0) / totalRatings 
+        ? ratings.reduce((acc: number, curr: { rating: number }) => acc + curr.rating, 0) / totalRatings 
         : 0
         
       const passesRating = ratingFilter.some((filter: string) => {
@@ -157,7 +157,7 @@ export default async function HomePage({
               const ratings = recipe.cookbook_ratings || []
               const totalRatings = ratings.length
               const averageRating = totalRatings > 0 
-                ? ratings.reduce((acc: number, curr: any) => acc + curr.rating, 0) / totalRatings 
+                ? ratings.reduce((acc: number, curr: { rating: number }) => acc + curr.rating, 0) / totalRatings 
                 : 0
 
               return (

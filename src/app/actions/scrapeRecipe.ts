@@ -50,7 +50,7 @@ export async function scrapeRecipeFromUrl(url: string): Promise<{ data?: Scraped
 
     const html = await response.text()
     const $ = cheerio.load(html)
-    let recipeData: any = null
+    let recipeData: Record<string, unknown> | null = null
 
     // Look through all JSON-LD scripts
     $('script[type="application/ld+json"]').each((_, element) => {
