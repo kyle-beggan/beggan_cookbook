@@ -26,6 +26,7 @@ sudo tee /opt/bitnami/apache2/conf/vhosts/beggan-cookbook-vhost.conf > /dev/null
   ServerName cookbook.sleepyhollows.com
   ProxyPass / http://localhost:3001/
   ProxyPassReverse / http://localhost:3001/
+  ProxyTimeout 120
 </VirtualHost>
 APACHE
 

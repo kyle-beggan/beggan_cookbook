@@ -30,7 +30,7 @@ export async function scrapeRecipeFromUrl(url: string): Promise<{ data?: Scraped
     }
 
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 60000) // 60 second timeout to allow scraperapi to work
+    const timeoutId = setTimeout(() => controller.abort(), 45000) // 45 second timeout to prevent Apache 502 proxy timeout
 
     const response = await fetch(fetchUrl, {
       cache: 'no-store',
